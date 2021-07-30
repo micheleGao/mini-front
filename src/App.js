@@ -1,23 +1,25 @@
-import logo from './logo.svg';
+import {useState, useEffect} from 'react';
+import {Route, Switch} from 'react-router-dom'
+import Navigation from './components/Navigation/Navigation';
+import Home from './components/Home/Home';
+import Students from './components/Students/Students';
+import StudentDetails from './components/StudentDetails/StudentDetails';
 import './App.css';
 
 function App() {
+  const [student, setStudent]= useState([]);
+  const [cats, setCat]= useState([])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navigation/>
+      <h1>Mini School </h1>
+      <Switch>
+      <Route path='/'exact component={Home}/>
+      <Route path='/students' exact render={()=> <Students student={student} setStudent={setStudent} />}/>
+      <Route path='/students/:id' render={()=> <StudentDetails cats={cats} setCat={setCat}/>}/>
+      <Route path='/students/:id/edit' render={()=> <StudentDetails cats={cats} setCat={setCat}/>}/>
+      </Switch>
+
     </div>
   );
 }
