@@ -10,7 +10,7 @@ export default function Navigation() {
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/students">Students</Nav.Link>
-                        <Nav.Link href="/projects">Projects</Nav.Link>
+                        <Nav.Link href="/students/:id/edit">Edit Page</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>

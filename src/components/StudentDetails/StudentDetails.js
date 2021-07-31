@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Card, CardGroup, Button } from 'react-bootstrap';
+import { useHistory } from 'react-router';
 
 export default function StudentDetails() {
 
+    const history=useHistory();
+    
     const [cats, setCat] = useState([]);
     const { id } = useParams();
     const getStudentDetail = async () => {
@@ -28,6 +31,25 @@ export default function StudentDetails() {
     if (cats.length <= 0) {
         return 'loading....'
     }
+    const _handleDelete = async (e) => {
+        const API_ENDPOINT_SHOW = `http://localhost:8000/students/${id}`
+        if (window.confirm('Hey! you sure? Thats going to be gone forever!')) {
+            try {
+                const deletedInfo = await fetch(API_ENDPOINT_SHOW, { method: 'DELETE' });
+                if (deletedInfo.status === 204) {
+                    getStudentDetail();
+                    console.log('delete from student details')
+                    history.push('/');
+                } else {
+                    alert('THERE SEEMS TO BE AN ISSUE....');
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        return;
+    }
+
 
     return (
 
@@ -43,8 +65,12 @@ export default function StudentDetails() {
                         <p>{cats.nationality}</p>
                         <p>{cats.quote}</p>
                         <div>
-                            <Button variant='success'>Edit</Button>
-                            <Button variant='danger'>Delete</Button>
+                            {/* <Link to={`students/${id}/edit`}> */}
+                                edit me
+                                {/* <Button variant='success'>Edit</Button>
+                                <Button variant='danger'>Delete</Button> */}
+                            {/* </Link> */}
+                            <Link to={`/students/${id}/edit`}> Edit me</Link>
                         </div>
                     </Container>
                     {cats.project.length > 0 &&
@@ -57,10 +83,10 @@ export default function StudentDetails() {
                                     <p>{project.preview_url}</p>
 
                                     <div>
-                                        <Link to="/students/:id/edit">
-                                            <Button variant='secondary'>Edit</Button>
-                                            <Button variant='danger'>Delete</Button>
-                                        </Link>
+
+                                        <Button variant='secondary'>Edit</Button>
+                                        <Button onClick={_handleDelete} variant='danger'>Delete</Button>
+
                                     </div>
 
                                 </Container>
